@@ -1,0 +1,124 @@
+#include <stdio.h>
+
+#define MAX_NOTAS 100
+
+// ===== Funções da Etapa 5 =====
+
+// Calcula e retorna a média das notas
+float calcularMedia(float notas[], int quantidade) {
+    float soma = 0;
+    for (int i = 0; i < quantidade; i++) {
+        soma += notas[i];
+    }
+    return soma / quantidade;
+}
+
+// Retorna a maior nota
+float maiorNota(float notas[], int quantidade) {
+    float maior = notas[0];
+    for (int i = 1; i < quantidade; i++) {
+        if (notas[i] > maior)
+            maior = notas[i];
+    }
+    return maior;
+}
+
+// Retorna a menor nota
+float menorNota(float notas[], int quantidade) {
+    float menor = notas[0];
+    for (int i = 1; i < quantidade; i++) {
+        if (notas[i] < menor)
+            menor = notas[i];
+    }
+    return menor;
+}
+
+
+// ========== PROGRAMA PRINCIPAL ==========
+int main() {
+    float notas[MAX_NOTAS];
+    int quantidade = 0;
+    float nota;
+    char continuar;
+    int opcao;
+
+    printf("* Calculadora de Estatísticas de Notas *\n");
+    printf("Digite as notas dos alunos (0 a 10). Digite -1 para encerrar.\n");
+
+    // ===== Etapa 3: Estruturas de Repetição =====
+    do {
+        printf("\n--- Cadastro de Notas ---\n");
+
+        while (quantidade < MAX_NOTAS) {
+            printf("Nota %d: ", quantidade + 1);
+            scanf("%f", &nota);
+
+            if (nota == -1) {
+                break;
+            }
+
+            if (nota >= 0 && nota <= 10) {
+                notas[quantidade] = nota;
+                quantidade++;
+            } else {
+                int erroTipo = (nota < 0) ? 1 : 2;
+
+                switch (erroTipo) {
+                    case 1:
+                        printf("⚠️ Erro: Nota inválida! Valor menor que 0.\n");
+                        break;
+                    case 2:
+                        printf("⚠️ Erro: Nota inválida! Valor maior que 10.\n");
+                        break;
+                    default:
+                        printf("⚠️ Erro desconhecido!\n");
+                        break;
+                }
+            }
+        }
+
+        // Exibe notas
+        printf("\nNotas inseridas:\n");
+        for (int i = 0; i < quantidade; i++) {
+            printf("Aluno %d: %.2f\n", i + 1, notas[i]);
+        }
+
+        // ===== Etapa 5: Menu de estatísticas =====
+        if (quantidade > 0) {
+            do {
+                printf("\n===== MENU ESTATÍSTICO =====\n");
+                printf("1 - Calcular Média\n");
+                printf("2 - Mostrar Maior Nota\n");
+                printf("3 - Mostrar Menor Nota\n");
+                printf("4 - Voltar ao Cadastro\n");
+                printf("Escolha uma opção: ");
+                scanf("%d", &opcao);
+
+                switch (opcao) {
+                    case 1:
+                        printf("📊 Média das notas: %.2f\n", calcularMedia(notas, quantidade));
+                        break;
+                    case 2:
+                        printf("⬆️ Maior nota: %.2f\n", maiorNota(notas, quantidade));
+                        break;
+                    case 3:
+                        printf("⬇️ Menor nota: %.2f\n", menorNota(notas, quantidade));
+                        break;
+                    case 4:
+                        printf("Voltando ao cadastro...\n");
+                        break;
+                    default:
+                        printf("Opção inválida!\n");
+                }
+
+            } while (opcao != 4);
+        }
+
+        printf("\nDeseja cadastrar mais notas? (S/N): ");
+        scanf(" %c", &continuar);
+
+    } while (continuar == 'S' || continuar == 's');
+
+    printf("\nPrograma encerrado. Total de notas válidas: %d\n", quantidade);
+    return 0;
+}
